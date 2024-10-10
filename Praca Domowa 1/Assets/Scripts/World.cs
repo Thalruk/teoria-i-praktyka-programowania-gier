@@ -1,40 +1,66 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    [SerializeField] private HexSettings hexSettings;
-    [SerializeField] private uint width;
-    [SerializeField] private uint height;
+    [SerializeField] private GameObject hex;
 
-    [SerializeField] private Hex hex;
-    [SerializeField] private Hex[] world;
-    private void Awake()
+    [SerializeField] private int width;
+    [SerializeField] private int height;
+
+    [SerializeField] private Color selectionColor;
+
+    [SerializeField] private List<Collider2D> selectedHexes;
+    void Awake()
     {
-        InitializeWorld();
-    }
-
-    private void InitializeWorld()
-    {
-        world = new Hex[height * width];
-
-        for (int z = 0, i = 0; z < height; z++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
             {
-                CreateCell(x, z, i);
+                Vector3 hexPosition = Vector3.zero;
+                if (y % 2 == 0)
+                {
+                    hexPosition = new Vector3(x + (0.5f * x), (y * 0.8828125f) / 2, 0);
+                }
+                else
+                {
+                    hexPosition = new Vector3(0.75f + x + (0.5f * x), (y * 0.8828125f) / 2, 0);
+                }
+                GameObject newHex = Instantiate(hex, hexPosition, Quaternion.identity);
+                newHex.name = $"hex {x}:{y}";
+                newHex.GetComponent<Hex>().SetText($"{x},{y},{0}");
+                newHex.GetComponent<Hex>().SetColor(new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
             }
+
         }
     }
-    void CreateCell(int x, int z, int i)
-    {
-        Vector3 position;
-        position.x = x * 10f;
-        position.y = 0f;
-        position.z = z * 10f;
 
-        Hex createdHex = Instantiate(hex);
-        world[i] = createdHex;
-        createdHex.transform.SetParent(transform, false);
-        createdHex.transform.localPosition = position;
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                foreach (Collider2D obj in selectedHexes)
+                {
+                    obj.GetComponent<Hex>().Deselect();
+                }
+                selectedHexes.Clear();
+
+                List<Collider2D> objects = Physics2D.OverlapCircleAll(hit.transform.position, 0.75f).ToList<Collider2D>();
+
+                objects.Remove(hit.collider);
+
+                selectedHexes.AddRange(objects);
+
+                foreach (Collider2D obj in selectedHexes)
+                {
+                    obj.GetComponent<Hex>().Select(selectionColor);
+                }
+            }
+        }
     }
 }
