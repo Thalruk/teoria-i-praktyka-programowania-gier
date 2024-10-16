@@ -29,7 +29,7 @@ public class World : MonoBehaviour
                 }
                 GameObject newHex = Instantiate(hex, hexPosition, Quaternion.identity);
                 newHex.name = $"hex {x}:{y}";
-                newHex.GetComponent<Hex>().SetText($"{x},{y},{0}");
+                newHex.GetComponent<Hex>().SetText($"{x},{y}");
                 newHex.GetComponent<Hex>().SetColor(new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
             }
 

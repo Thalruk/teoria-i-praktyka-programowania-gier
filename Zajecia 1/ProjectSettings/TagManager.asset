@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - Ground
+  - Medpack
   layers:
   - Default
   - TransparentFX
