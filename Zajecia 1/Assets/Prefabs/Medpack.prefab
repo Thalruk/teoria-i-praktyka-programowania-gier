@@ -172,7 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2898bf0a2f4dc654996b33bba0479add, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 7482667652216324306, guid: 730878c1389c9044e98fbc0b3940fa49, type: 3}
+  useSound: {fileID: 8300000, guid: d654174ef194bd7479bf4b8d8f753318, type: 3}
+  destroyObject: 1
 --- !u!1 &8402766610907973469
 GameObject:
   m_ObjectHideFlags: 0

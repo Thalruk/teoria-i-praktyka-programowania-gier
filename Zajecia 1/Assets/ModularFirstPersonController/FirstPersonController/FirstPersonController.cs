@@ -219,10 +219,12 @@ public class FirstPersonController : MonoBehaviour
 
         if (enableSprint)
         {
-            if (isSprinting)
+            if (isSprinting && Character.Instance.GetCurrentStamina() != 0)
             {
                 isZoomed = false;
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
+
+                Character.Instance.UseStamina(3 * Time.deltaTime);
 
                 // Drain sprint remaining while sprinting
                 if (!unlimitedSprint)
@@ -239,6 +241,10 @@ public class FirstPersonController : MonoBehaviour
             {
                 // Regain sprint while not sprinting
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
+                if (Character.Instance.GetCurrentStamina() != Character.Instance.GetMaxStamina())
+                {
+                    Character.Instance.RegenStamina(10 * Time.deltaTime);
+                }
             }
 
             // Handles sprint cooldown 
@@ -321,7 +327,7 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // All movement calculations shile sprint is active
-            if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
+            if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown && Character.Instance.GetCurrentStamina() != 0)
             {
                 targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
 

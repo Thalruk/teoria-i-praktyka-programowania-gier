@@ -9,6 +9,6 @@ public class Medpack : Interactable
 
     public override void Interact()
     {
-        InfoShower.Instance.ShowText("Heal 50 hp!", 2f);
+        Character.Instance.Heal(20);
     }
 }
