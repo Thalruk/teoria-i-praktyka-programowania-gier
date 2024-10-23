@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -163,9 +163,17 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -202,7 +210,95 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &6481203754870024968
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1534393015494711306, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395868078474104478, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: m_Name
+      value: Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 7340419595430099856, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: missles
+      value: 
+      objectReference: {fileID: 6481203754870024970}
+    - target: {fileID: 7340419595430099856, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: misslePrefab
+      value: 
+      objectReference: {fileID: 1779979827698309516, guid: 313d6a30037dc914eb0ab21fc94231bd, type: 3}
+    - target: {fileID: 7340419595430099856, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: missleSpawnersHolder
+      value: 
+      objectReference: {fileID: 6481203754870024969}
+    - target: {fileID: 7340419595430099856, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+      propertyPath: missleSpawners.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+--- !u!1 &6481203754870024969 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8013037092567513305, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+  m_PrefabInstance: {fileID: 6481203754870024968}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6481203754870024970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5856055956479586416, guid: a913c867b534d6646bcfb42e227c9d11, type: 3}
+  m_PrefabInstance: {fileID: 6481203754870024968}
+  m_PrefabAsset: {fileID: 0}
