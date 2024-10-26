@@ -12,4 +12,9 @@ public class Missle : MonoBehaviour
         rigidbody2D.AddForce(Vector2.up * speed);
     }
 
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+
 }
