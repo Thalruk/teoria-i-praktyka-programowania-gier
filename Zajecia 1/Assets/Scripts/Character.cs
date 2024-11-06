@@ -15,6 +15,9 @@ public class Character : MonoBehaviour
     [SerializeField] int ammo = 0;
     [SerializeField] bool hasKey = false;
 
+    [SerializeField] ParticleSystem explosion;
+    [SerializeField] GameObject bulletHole;
+
     private AudioSource audioSource;
 
     private void Awake()
@@ -61,6 +64,9 @@ public class Character : MonoBehaviour
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2)), out hit, 100))
                 {
                     UseAmmo(1);
+                    ParticleSystem explosionInstance = Instantiate(explosion, hit.point, Quaternion.identity);
+                    Instantiate(bulletHole, hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                    Destroy(explosionInstance, 2);
                     PlaySound(gunShootSound);
                 }
             }

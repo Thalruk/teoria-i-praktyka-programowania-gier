@@ -15,7 +15,7 @@ public class CharacterUIManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI infoText;
 
-    private void Start()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -27,6 +27,7 @@ public class CharacterUIManager : MonoBehaviour
         }
 
         healthSlider.maxValue = Character.Instance.GetMaxHealth();
+        staminaSlider.maxValue = Character.Instance.GetMaxStamina();
     }
 
     public void UpdateHealthBar(float value)

@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Door : Interactable
 {
     [SerializeField] string noKeyMessage;
     [SerializeField] string hasKeyMessage;
+
 
     public override void Interact()
     {
@@ -11,6 +13,7 @@ public class Door : Interactable
         if (Character.Instance.GetKey())
         {
             message = hasKeyMessage;
+            SceneManager.LoadScene(1);
         }
         else
         {
