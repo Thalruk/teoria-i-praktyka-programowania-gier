@@ -11,15 +11,6 @@ public class ObjectSpawner : MonoBehaviour
         SpawnObjects(triangle, triangleCount);
         SpawnObjects(square, squareCount);
     }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void SpawnObjects(GameObject gameObject, int count)
     {
         for (int i = 0; i < count; i++)
