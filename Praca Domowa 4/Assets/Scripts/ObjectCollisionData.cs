@@ -5,10 +5,11 @@ public class ObjectCollisionData : MonoBehaviour
 {
     [SerializeField] List<GameObject> possibleCollisions;
     [SerializeField] int checkRadius = 1;
-    [SerializeField] bool checkEveryFrame = false;
+    [SerializeField] Color baseColor;
 
     private void Start()
     {
+        GetComponent<SpriteRenderer>().color = baseColor;
         CheckForPossibleCollisions();
     }
 
@@ -33,35 +34,15 @@ public class ObjectCollisionData : MonoBehaviour
         {
             foreach (GameObject obj in possibleCollisions)
             {
-                CollisionCheck.CheckForCollisions(gameObject, obj);
+                if (CollisionCheck.CheckCollision(gameObject, obj))
+                {
+                    GetComponent<SpriteRenderer>().color = Color.yellow;
+                }
+                else
+                {
+                    GetComponent<SpriteRenderer>().color = baseColor;
+                }
             }
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (GetComponent<SpriteRenderer>().sprite.vertices.Length == 4)
-        {
-            Sprite spr = GetComponent<SpriteRenderer>().sprite;
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[0], 0.1f);
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[1], 0.1f);
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[2], 0.1f);
-            Gizmos.color = Color.black;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[3], 0.1f);
-        }
-        else if (GetComponent<SpriteRenderer>().sprite.vertices.Length == 3)
-        {
-            Sprite spr = GetComponent<SpriteRenderer>().sprite;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[0], 0.1f);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[1], 0.1f);
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position + (Vector3)spr.vertices[2], 0.1f);
         }
     }
 }

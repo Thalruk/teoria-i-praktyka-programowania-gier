@@ -1,76 +1,72 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class CollisionCheck : MonoBehaviour
 {
-    /// <summary>
-    /// find bounding shape, edges will be projecting axis of shape,
-    /// for square, bigger square,
-    /// for triangle, bigger triangle with right rotation
-    /// this will allow to skip complicated math
-    /// then project each wall, with right comparison
-    /// check each edge projected on shape
-    /// if there is gap return false
-    /// if there is no gap, keep going
-    /// if all edges had been checked return true
-    /// </summary>
-    /// <returns></returns>
-    public static bool CheckForCollisions(GameObject first, GameObject second)
+    public static bool CheckCollision(GameObject first, GameObject second)
     {
-        int firstVerticeCount = first.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite.vertices.Length;
-        int secondVerticeCount = second.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite.vertices.Length;
+        Vector2[] firstPoints = GetWorldVertices(first.GetComponent<SpriteRenderer>());
+        Vector2[] secondPoints = GetWorldVertices(second.GetComponent<SpriteRenderer>());
 
-        print($"FIRST   {first.GetComponent<SpriteRenderer>().sprite.vertices.Length}");
-        print($"SECOND   {second.GetComponent<SpriteRenderer>().sprite.vertices.Length}");
+        Vector2[] firstAxes = GetAxes(firstPoints);
+        Vector2[] secondAxes = GetAxes(secondPoints);
 
-        print($"FIRST   {first.GetComponent<SpriteRenderer>().sprite.vertices.Length}");
-        return false;
+        foreach (Vector2 axis in firstAxes)
+        {
+            if (!IsOverlapping(axis, firstPoints, secondPoints))
+                return false;
+        }
+
+        foreach (Vector2 axis in secondAxes)
+        {
+            if (!IsOverlapping(axis, firstPoints, secondPoints))
+                return false;
+        }
+
+        return true;
     }
 
-    public List<Vector2> GetVertices(GameObject obj)
+    private static Vector2[] GetAxes(Vector2[] polygon)
     {
-        return obj.GetComponent<SpriteRenderer>().sprite.vertices.ToList<Vector2>();
+        Vector2[] axes = new Vector2[polygon.Length];
+        for (int i = 0; i < polygon.Length; i++)
+        {
+            Vector2 edge = polygon[(i + 1) % polygon.Length] - polygon[i];
+            axes[i] = new Vector2(-edge.y, edge.x).normalized;
+        }
+        return axes;
     }
 
-
-
-    //private void OnDrawGizmos()
-    //{
-    //    if (possibleCollisions.Count != 0)
-    //    {
-    //        Vector2[] vertices = gameObject.GetComponent<SpriteRenderer>().sprite.vertices;
-    //        Vector2[] axis = new Vector2[vertices.Length];
-
-    //        foreach (GameObject otherOb in possibleCollisions)
-    //        {
-    //            //print($"{i} --- {(i + 1) % vertices.Length}");
-    //            //axis[i] = new Vector2(vertices[i].x - vertices[(i + 1) % vertices.Length].x, vertices[i].y - vertices[(i + 1) % vertices.Length].y);
-
-    //            //axis[0] = Vector2.Perpendicular(otherVertices[0] - otherVertices[2]);
-    //            //axis[1] = Vector2.Perpendicular(otherVertices[2] - otherVertices[1]);
-    //            //axis[2] = Vector2.Perpendicular(otherVertices[1] - otherVertices[3]);
-    //            //axis[3] = Vector2.Perpendicular(otherVertices[3] - otherVertices[0]);
-
-    //            for (int i = 0; i < axis.Length; i++)
-    //            {
-    //                foreach (Vector2 vertice in vertices)
-    //                {
-    //                    Gizmos.DrawWireSphere(transform.position + Vector3.Project(vertice, axis[i]), 0.1f);
-
-    //                }
-
-    //                DrawLine(gameObject, axis[i]);
-    //            }
-    //        }
-    //    }
-    //}
-
-    private void DrawLine(GameObject ob, Vector2 pos)
+    private static bool IsOverlapping(Vector2 axis, Vector2[] polygonA, Vector2[] polygonB)
     {
-        Gizmos.color = Color.white;
-        Gizmos.DrawLine((Vector2)ob.transform.position + pos, (Vector2)ob.transform.position - pos);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(pos, 0.5f);
+        (float minA, float maxA) = ProjectPolygon(axis, polygonA);
+        (float minB, float maxB) = ProjectPolygon(axis, polygonB);
+
+        return maxA >= minB && maxB >= minA;
+    }
+
+    private static (float min, float max) ProjectPolygon(Vector2 axis, Vector2[] polygon)
+    {
+        float min = Vector2.Dot(axis, polygon[0]);
+        float max = min;
+
+        for (int i = 1; i < polygon.Length; i++)
+        {
+            float projection = Vector2.Dot(axis, polygon[i]);
+            if (projection < min) min = projection;
+            if (projection > max) max = projection;
+        }
+
+        return (min, max);
+    }
+
+    private static Vector2[] GetWorldVertices(SpriteRenderer spriteRenderer)
+    {
+        Vector2[] localPoints = spriteRenderer.sprite.vertices;
+        Vector2[] worldPoints = new Vector2[localPoints.Length];
+        for (int i = 0; i < localPoints.Length; i++)
+        {
+            worldPoints[i] = spriteRenderer.transform.TransformPoint(localPoints[i]);
+        }
+        return worldPoints;
     }
 }

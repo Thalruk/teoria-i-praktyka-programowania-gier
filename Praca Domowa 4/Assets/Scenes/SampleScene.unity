@@ -252,9 +252,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triangle: {fileID: 6167920582137092249, guid: 5bb38dff288e4294c9eb8cee4ceacc04, type: 3}
-  triangleCount: 2
+  triangleCount: 1
   square: {fileID: 8910017281888347019, guid: 5f9bf4422075b7b40a66853af9d979f3, type: 3}
-  squareCount: 2
+  squareCount: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +418,10 @@ PrefabInstance:
     - target: {fileID: 6259890432857835838, guid: 01cfbdd9c413f4047b545df98c7b0c9f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800846654951993223, guid: 01cfbdd9c413f4047b545df98c7b0c9f, type: 3}
+      propertyPath: boundingShape
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8907991949755459876, guid: 01cfbdd9c413f4047b545df98c7b0c9f, type: 3}
       propertyPath: m_LocalRotation.w
