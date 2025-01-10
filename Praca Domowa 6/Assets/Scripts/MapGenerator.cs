@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Tiles))]
@@ -9,8 +10,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] GameObject tileObject;
     [SerializeField] GameObject playerObject;
 
-    [SerializeField] int width;
-    [SerializeField] int height;
+    [SerializeField] public int width;
+    [SerializeField] public int height;
     [SerializeField] int treeAmount;
     [SerializeField] int scale;
 
@@ -44,7 +45,7 @@ public class MapGenerator : MonoBehaviour
         PlacePlayer();
     }
 
-    private void GenerateGrass()
+    private IEnumerator GenerateGrass()
     {
         for (int x = 0; x < width; x++)
         {
@@ -54,11 +55,12 @@ public class MapGenerator : MonoBehaviour
                 mapData[x, y] = tile;
                 tile.name = tiles.tiles[0].name;
                 tile.GetComponent<Tile>().data = tiles.tiles[0];
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
 
-    private void GenerateRiver()
+    private IEnumerator GenerateRiver()
     {
         riverWidth = Random.Range(0, width / 5);
         riverStart = Random.Range(width * 2 / 10, width * 8 / 10);
@@ -68,11 +70,12 @@ public class MapGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 mapData[x, y].GetComponent<Tile>().UpdateData(tiles.tiles[1]);
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }
 
-    private void GenerateRoad()
+    private IEnumerator GenerateRoad()
     {
         int roadStart = Random.Range(0, riverStart - riverWidth);
 
@@ -83,16 +86,19 @@ public class MapGenerator : MonoBehaviour
         for (int y = height - 1; y > roadMiddle; y--)
         {
             mapData[roadStart, y].GetComponent<Tile>().UpdateData(tiles.tiles[2]);
+            yield return new WaitForSeconds(0.1f);
         }
 
         for (int x = roadStart; x <= roadEnd; x++)
         {
             mapData[x, roadMiddle].GetComponent<Tile>().UpdateData(tiles.tiles[2]);
+            yield return new WaitForSeconds(0.1f);
         }
 
         for (int y = 0; y < roadMiddle; y++)
         {
             mapData[roadEnd, y].GetComponent<Tile>().UpdateData(tiles.tiles[2]);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

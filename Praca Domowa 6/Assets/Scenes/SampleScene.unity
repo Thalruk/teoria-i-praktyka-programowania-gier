@@ -264,7 +264,7 @@ MonoBehaviour:
   playerObject: {fileID: 4129595683878323065, guid: c217cde7c12202d41a1ace762aead398, type: 3}
   width: 20
   height: 20
-  treeAmount: 30
+  treeAmount: 10
   scale: 20
 --- !u!4 &2138224143
 Transform:
