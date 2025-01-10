@@ -299,7 +299,7 @@ MonoBehaviour:
     moveCost: 10
   - name: Water
     color: {r: 0, g: 1, b: 0.9148698, a: 1}
-    moveCost: 50
+    moveCost: 100
   - name: Road
     color: {r: 0.4716981, g: 0.33412853, b: 0.037824854, a: 1}
     moveCost: 1

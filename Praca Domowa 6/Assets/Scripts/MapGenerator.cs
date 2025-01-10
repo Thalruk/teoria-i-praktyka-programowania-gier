@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(Tiles))]
@@ -36,16 +36,16 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
     }
 
-    private void GenerateMap()
+    private async Task GenerateMap()
     {
-        GenerateGrass();
-        GenerateRiver();
-        GenerateRoad();
-        GenerateTrees();
+        await GenerateGrass();
+        await GenerateRiver();
+        await GenerateRoad();
+        await GenerateTrees();
         PlacePlayer();
     }
 
-    private IEnumerator GenerateGrass()
+    private async Task GenerateGrass()
     {
         for (int x = 0; x < width; x++)
         {
@@ -55,12 +55,12 @@ public class MapGenerator : MonoBehaviour
                 mapData[x, y] = tile;
                 tile.name = tiles.tiles[0].name;
                 tile.GetComponent<Tile>().data = tiles.tiles[0];
-                yield return new WaitForSeconds(0.1f);
+                await Task.Delay(1);
             }
         }
     }
 
-    private IEnumerator GenerateRiver()
+    private async Task GenerateRiver()
     {
         riverWidth = Random.Range(0, width / 5);
         riverStart = Random.Range(width * 2 / 10, width * 8 / 10);
@@ -70,12 +70,12 @@ public class MapGenerator : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 mapData[x, y].GetComponent<Tile>().UpdateData(tiles.tiles[1]);
-                yield return new WaitForSeconds(0.1f);
+                await Task.Delay(1);
             }
         }
     }
 
-    private IEnumerator GenerateRoad()
+    private async Task GenerateRoad()
     {
         int roadStart = Random.Range(0, riverStart - riverWidth);
 
@@ -86,23 +86,23 @@ public class MapGenerator : MonoBehaviour
         for (int y = height - 1; y > roadMiddle; y--)
         {
             mapData[roadStart, y].GetComponent<Tile>().UpdateData(tiles.tiles[2]);
-            yield return new WaitForSeconds(0.1f);
+            await Task.Delay(1);
         }
 
         for (int x = roadStart; x <= roadEnd; x++)
         {
             mapData[x, roadMiddle].GetComponent<Tile>().UpdateData(tiles.tiles[2]);
-            yield return new WaitForSeconds(0.1f);
+            await Task.Delay(1);
         }
 
         for (int y = 0; y < roadMiddle; y++)
         {
             mapData[roadEnd, y].GetComponent<Tile>().UpdateData(tiles.tiles[2]);
-            yield return new WaitForSeconds(0.1f);
+            await Task.Delay(1);
         }
     }
 
-    private void GenerateTrees()
+    private async Task GenerateTrees()
     {
         int createdTrees = 0;
 
@@ -118,6 +118,7 @@ public class MapGenerator : MonoBehaviour
                 tile.UpdateData(tiles.tiles[3]);
                 createdTrees++;
             }
+            await Task.Delay(1);
         }
     }
 
@@ -135,6 +136,7 @@ public class MapGenerator : MonoBehaviour
             if (tile.data.name != "Water")
             {
                 Instantiate(playerObject, new Vector2(x, y), Quaternion.identity);
+                playerPlaced = true;
             }
         }
     }

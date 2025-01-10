@@ -4,13 +4,75 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     MapGenerator m_MapGenerator;
+    [SerializeField] LayerMask m_LayerMask;
+    [SerializeField] float movesPerSecond;
+
+
+    [SerializeField] List<GameObject> openList;
+    [SerializeField] List<GameObject> closedList;
+    Dictionary<GameObject, float> gScore;
+    Dictionary<GameObject, float> fScore;
+    Dictionary<GameObject, GameObject> cameFrom = new Dictionary<GameObject, GameObject>();
+
+    [Space]
+    [SerializeField] List<GameObject> path;
+
+
+    private float time = 0.0f;
+    public float interpolationPeriod = 0.1f;
+
     private void Start()
     {
         m_MapGenerator = MapGenerator.Instance;
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                path = FindPath(m_MapGenerator.mapData[(int)transform.position.x, (int)transform.position.y], hit.collider.gameObject);
+
+                if (path.Count > 0)
+                {
+                    foreach (GameObject item in path)
+                    {
+                        print($"{item.transform.position}");
+                    }
+                }
+                else
+                {
+                    print("Path DONT exists");
+                }
+            }
+        }
+
+        time += Time.deltaTime;
+
+        if (path.Count > 0)
+        {
+            if (time >= interpolationPeriod)
+            {
+                time = 0.0f;
+
+                MoveOnPathOnce(path);
+            }
+        }
+    }
+
+    private void MoveOnPathOnce(List<GameObject> path)
+    {
+        transform.position = path[0].transform.position;
+        path.Remove(path[0]);
+    }
+
     public List<GameObject> FindPath(GameObject start, GameObject goal)
     {
-        List<GameObject> openList = new List<GameObject> { start };
+        cameFrom.Clear();
+        openList = new List<GameObject> { start };
         List<GameObject> closedList = new List<GameObject>();
         Dictionary<GameObject, float> gScore = new Dictionary<GameObject, float>();
         Dictionary<GameObject, float> fScore = new Dictionary<GameObject, float>();
@@ -32,7 +94,7 @@ public class Player : MonoBehaviour
             GameObject current = GetTileWithLowestF(openList, fScore);
 
             if (current == goal)
-                return ReconstructPath(current);
+                return ReconstructPath(cameFrom, current);
 
             openList.Remove(current);
             closedList.Add(current);
@@ -48,6 +110,7 @@ public class Player : MonoBehaviour
                 else if (tentativeGScore >= gScore[neighbor])
                     continue;
 
+                cameFrom[neighbor] = current;
                 gScore[neighbor] = tentativeGScore;
                 fScore[neighbor] = gScore[neighbor] + Heuristic(neighbor, goal);
             }
@@ -84,27 +147,27 @@ public class Player : MonoBehaviour
 
         foreach (Vector2 offset in new Vector2[] { new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1), new Vector2Int(-1, 0) })
         {
-            int nx = (int)(tile.transform.position.x + offset.x);
-            int ny = (int)(tile.transform.position.y + offset.y);
+            int neighborX = (int)(tile.transform.position.x + offset.x);
+            int neighborY = (int)(tile.transform.position.y + offset.y);
 
-            if (nx >= 0 && nx < m_MapGenerator.width && ny >= 0 && ny < m_MapGenerator.height)
-                neighbors.Add(m_MapGenerator.mapData[nx, ny]);
+            if (neighborX >= 0 && neighborX < m_MapGenerator.width && neighborY >= 0 && neighborY < m_MapGenerator.height)
+                neighbors.Add(m_MapGenerator.mapData[neighborX, neighborY]);
         }
 
         return neighbors;
     }
 
-    private List<GameObject> ReconstructPath(GameObject current)
+    private List<GameObject> ReconstructPath(Dictionary<GameObject, GameObject> cameFrom, GameObject current)
     {
         List<GameObject> path = new List<GameObject>();
 
-        while (current != null)
+        while (current != null && cameFrom.ContainsKey(current))
         {
             path.Add(current);
+            current = cameFrom[current];
         }
 
         path.Reverse();
         return path;
     }
-
 }

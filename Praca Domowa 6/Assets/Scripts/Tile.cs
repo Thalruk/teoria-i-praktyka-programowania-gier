@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
     public void UpdateData(TileData newData)
     {
         data = newData;
+        name = newData.name;
         spriteRenderer.color = newData.color;
     }
 }
