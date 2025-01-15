@@ -3,52 +3,57 @@ using UnityEngine;
 [CreateAssetMenu]
 public class PatrolState : StateBase
 {
-    Player player;
-    [SerializeField] float timer = 0;
-
-    public override void Enter()
+    public override void StateEnter(StateMachine stateMachine)
     {
-        player = Player.Instance;
+        Debug.Log($"{stateMachine.gameObject.name} Entered {name}");
     }
 
-    public override void Update()
+    public override void StateUpdate(StateMachine stateMachine)
     {
-        timer += Time.deltaTime;
-        if (timer > 1)
-        {
-            RandomMove();
-            timer = 0;
-        }
-    }
-
-    public override void Exit()
-    {
-        Debug.Log("stop patroling");
-    }
-
-    private void RandomMove()
-    {
-        Vector2[] directions = { new Vector2(1, 1), new Vector2(1, -1), new Vector2(-1, -1), new Vector2(-1, 1) };
+        Vector2[] directions = { Vector2.left, Vector2.up, Vector2.right, Vector2.down };
         Vector2 movement = directions[Random.Range(0, directions.Length)];
 
-        if (player.transform.position.x + movement.x > MapGenerator.Instance.width)
+        int newX = (int)Mathf.Clamp(stateMachine.player.transform.position.x + movement.x, 0, MapGenerator.Instance.width - 1);
+        int newY = (int)Mathf.Clamp(stateMachine.player.transform.position.y + movement.y, 0, MapGenerator.Instance.height - 1);
+
+        stateMachine.player.transform.position = new Vector2(newX, newY);
+
+        stateMachine.player.currentFood = Mathf.Clamp(stateMachine.player.currentFood - 1, 0, stateMachine.player.maxFood);
+        stateMachine.player.UpdateFoodSLider();
+
+        //jest glodny k2
+        if (stateMachine.player.currentFood < stateMachine.player.maxFood * stateMachine.player.smallFoodAmountThreshold)
         {
-            movement = -movement;
+            stateMachine.SetState(stateMachine.searchState);
         }
 
-        if (player.transform.position.x + movement.x > MapGenerator.Instance.width)
+        foreach (FoodCenter foodCenter in MapGenerator.Instance.foodCenters)
         {
-            movement = -movement;
+            if (stateMachine.player.transform.position == foodCenter.transform.position)
+            {
+                if (stateMachine.player.foodCenterList.ContainsKey(foodCenter))
+                {
+                    stateMachine.player.foodCenterList[foodCenter] = foodCenter.currentFood;
+                }
+                else
+                {
+                    stateMachine.player.foodCenterList.Add(foodCenter, foodCenter.currentFood);
+                }
+
+            }
         }
 
-        if (player.transform.position.x + movement.x > MapGenerator.Instance.width)
-        {
-            movement = -movement;
-        }
 
-        if (player.transform.position.x + movement.x > MapGenerator.Instance.width)
+        foreach (Player player in stateMachine.player.GetAllPlayersButThisOne())
         {
-            movement = -movement;
+            if (stateMachine.player.transform.position == player.transform.position)
+            {
+                stateMachine.SetState(stateMachine.talkState);
+            }
         }
+    }
+
+    public override void StateExit(StateMachine stateMachine)
+    {
     }
 }

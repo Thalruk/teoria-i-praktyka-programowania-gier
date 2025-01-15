@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possibleCollisions: []
-  checkRadius: 1
+  checkRadius: 2
   baseColor: {r: 1, g: 0.10196079, b: 0.10196079, a: 1}
 --- !u!114 &-8579468058409934127
 MonoBehaviour:

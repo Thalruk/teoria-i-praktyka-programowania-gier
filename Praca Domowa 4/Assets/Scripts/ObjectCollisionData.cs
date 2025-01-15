@@ -30,18 +30,15 @@ public class ObjectCollisionData : MonoBehaviour
 
         possibleCollisions.Remove(gameObject);
 
-        if (possibleCollisions.Count > 0)
+        foreach (GameObject obj in possibleCollisions)
         {
-            foreach (GameObject obj in possibleCollisions)
+            if (CollisionCheck.CheckCollision(gameObject, obj))
             {
-                if (CollisionCheck.CheckCollision(gameObject, obj))
-                {
-                    GetComponent<SpriteRenderer>().color = Color.yellow;
-                }
-                else
-                {
-                    GetComponent<SpriteRenderer>().color = baseColor;
-                }
+                GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+            else
+            {
+                GetComponent<SpriteRenderer>().color = baseColor;
             }
         }
     }

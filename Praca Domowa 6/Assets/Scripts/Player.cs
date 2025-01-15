@@ -38,10 +38,6 @@ public class Player : MonoBehaviour
 
                 if (path.Count > 0)
                 {
-                    foreach (GameObject item in path)
-                    {
-                        print($"{item.transform.position}");
-                    }
                 }
                 else
                 {
@@ -94,21 +90,30 @@ public class Player : MonoBehaviour
             GameObject current = GetTileWithLowestF(openList, fScore);
 
             if (current == goal)
-                return ReconstructPath(cameFrom, current);
+            {
+                return ReconstructPath(cameFrom, goal);
+            }
 
             openList.Remove(current);
             closedList.Add(current);
 
             foreach (GameObject neighbor in GetNeighbors(current))
             {
-                if (closedList.Contains(neighbor)) continue;
+                if (closedList.Contains(neighbor))
+                {
+                    continue;
+                }
 
                 float tentativeGScore = gScore[current] + neighbor.GetComponent<Tile>().data.moveCost;
 
                 if (!openList.Contains(neighbor))
+                {
                     openList.Add(neighbor);
+                }
                 else if (tentativeGScore >= gScore[neighbor])
+                {
                     continue;
+                }
 
                 cameFrom[neighbor] = current;
                 gScore[neighbor] = tentativeGScore;
@@ -127,14 +132,12 @@ public class Player : MonoBehaviour
     private GameObject GetTileWithLowestF(List<GameObject> openList, Dictionary<GameObject, float> fScore)
     {
         GameObject bestTile = openList[0];
-        float bestFScore = fScore[bestTile];
 
-        foreach (var tile in openList)
+        foreach (GameObject tile in openList)
         {
-            if (fScore[tile] < bestFScore)
+            if (fScore[tile] < fScore[bestTile])
             {
                 bestTile = tile;
-                bestFScore = fScore[tile];
             }
         }
 
@@ -151,7 +154,9 @@ public class Player : MonoBehaviour
             int neighborY = (int)(tile.transform.position.y + offset.y);
 
             if (neighborX >= 0 && neighborX < m_MapGenerator.width && neighborY >= 0 && neighborY < m_MapGenerator.height)
+            {
                 neighbors.Add(m_MapGenerator.mapData[neighborX, neighborY]);
+            }
         }
 
         return neighbors;

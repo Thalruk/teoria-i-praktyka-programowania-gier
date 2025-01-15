@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -14,8 +15,11 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] public int width;
     [SerializeField] public int height;
+    [SerializeField] int waitTime = 1;
 
     public GameObject[,] mapData;
+    public List<FoodCenter> foodCenters;
+    public List<Player> players;
     int riverStart;
     int riverWidth;
 
@@ -56,7 +60,7 @@ public class MapGenerator : MonoBehaviour
                 mapData[x, y] = tile;
                 tile.name = "Grass";
                 tile.GetComponent<SpriteRenderer>().color = Color.green;
-                await Task.Delay(1);
+                await Task.Delay(waitTime);
             }
         }
     }
@@ -73,7 +77,7 @@ public class MapGenerator : MonoBehaviour
                 GameObject tile = mapData[x, y];
                 tile.name = "Water";
                 tile.GetComponent<SpriteRenderer>().color = Color.cyan;
-                await Task.Delay(1);
+                await Task.Delay(waitTime);
             }
         }
     }
@@ -91,7 +95,7 @@ public class MapGenerator : MonoBehaviour
             GameObject tile = mapData[roadStart, y];
             tile.name = "Road";
             tile.GetComponent<SpriteRenderer>().color = Color.yellow;
-            await Task.Delay(1);
+            await Task.Delay(waitTime);
         }
 
         for (int x = roadStart; x <= roadEnd; x++)
@@ -99,7 +103,7 @@ public class MapGenerator : MonoBehaviour
             GameObject tile = mapData[x, roadMiddle];
             tile.name = "Road";
             tile.GetComponent<SpriteRenderer>().color = Color.yellow;
-            await Task.Delay(1);
+            await Task.Delay(waitTime);
         }
 
         for (int y = 0; y < roadMiddle; y++)
@@ -107,34 +111,44 @@ public class MapGenerator : MonoBehaviour
             GameObject tile = mapData[roadEnd, y];
             tile.name = "Road";
             tile.GetComponent<SpriteRenderer>().color = Color.yellow;
-            await Task.Delay(1);
+            await Task.Delay(waitTime);
         }
     }
     private void PlacePlayers()
     {
-        Instantiate(playerObject, new Vector2(0, 0), Quaternion.identity);
-        Instantiate(playerObject, new Vector2(width - 1, 0), Quaternion.identity);
-        Instantiate(playerObject, new Vector2(0, height - 1), Quaternion.identity);
-        Instantiate(playerObject, new Vector2(width - 1, height - 1), Quaternion.identity);
+        GameObject player1 = Instantiate(playerObject, new Vector2(0, 0), Quaternion.identity);
+        player1.name = "Player 1";
+        GameObject player2 = Instantiate(playerObject, new Vector2(width - 1, 0), Quaternion.identity);
+        player2.name = "Player 2";
+        GameObject player3 = Instantiate(playerObject, new Vector2(0, height - 1), Quaternion.identity);
+        player3.name = "Player 3";
+        GameObject player4 = Instantiate(playerObject, new Vector2(width - 1, height - 1), Quaternion.identity);
+        player4.name = "Player 4";
+
+        players.Add(player1.GetComponent<Player>());
+        players.Add(player2.GetComponent<Player>());
+        players.Add(player3.GetComponent<Player>());
+        players.Add(player4.GetComponent<Player>());
     }
 
     private async Task PlaceFoodCenters()
     {
         int foodCentersGenerated = 0;
-        int foodCenters = Random.Range(minFoodCenters, maxFoodCenters);
+        int foodCentersAmount = Random.Range(minFoodCenters, maxFoodCenters);
 
-        while (foodCentersGenerated < foodCenters)
+        while (foodCentersGenerated < foodCentersAmount)
         {
             int x = Random.Range(0, width - 1);
             int y = Random.Range(0, height - 1);
 
             if (mapData[x, y].name != "Water")
             {
-                Instantiate(foodCenterObject, new Vector2(0, 0), Quaternion.identity);
+                GameObject foodCenter = Instantiate(foodCenterObject, new Vector2(x, y), Quaternion.identity);
+                foodCenter.name = $"FoodCenter {foodCentersGenerated}";
                 foodCentersGenerated++;
-                await Task.Delay(1);
+                foodCenters.Add(foodCenter.GetComponent<FoodCenter>());
+                await Task.Delay(waitTime);
             }
         }
-
     }
 }

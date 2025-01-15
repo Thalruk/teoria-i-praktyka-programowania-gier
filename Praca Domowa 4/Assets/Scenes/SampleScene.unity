@@ -420,6 +420,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8800846654951993223, guid: 01cfbdd9c413f4047b545df98c7b0c9f, type: 3}
+      propertyPath: checkRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8800846654951993223, guid: 01cfbdd9c413f4047b545df98c7b0c9f, type: 3}
       propertyPath: boundingShape
       value: 
       objectReference: {fileID: 0}

@@ -1,24 +1,41 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public static Player Instance;
-
     [SerializeField] int minStartFood;
     [SerializeField] int maxStartFood;
 
-    [SerializeField] int maxFood;
-    [SerializeField] int currentFood;
+    [SerializeField] public int maxFood;
+    [SerializeField] public int currentFood;
 
+    public float smallFoodAmountThreshold = 0.5f;
 
+    [SerializeField] Slider foodSlider;
+
+    public Dictionary<FoodCenter, int> foodCenterList;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(Instance);
-        }
-        Instance = this;
+        foodCenterList = new Dictionary<FoodCenter, int>();
         maxFood = Random.Range(minStartFood, maxStartFood);
+        currentFood = maxFood;
+        foodSlider.maxValue = maxFood;
+        foodSlider.value = currentFood;
+    }
+
+    public void UpdateFoodSLider()
+    {
+        foodSlider.value = currentFood;
+    }
+
+    public List<Player> GetAllPlayersButThisOne()
+    {
+        List<Player> players = FindObjectsOfType<Player>().ToList();
+        players.Remove(this);
+
+        return players;
     }
 }

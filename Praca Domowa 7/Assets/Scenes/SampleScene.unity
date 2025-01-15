@@ -263,6 +263,9 @@ MonoBehaviour:
   playerObject: {fileID: 5582349596255332534, guid: 4acebf38cd52c3549bac031ea3adf4d6, type: 3}
   foodCenterObject: {fileID: 7675594001776572989, guid: d3f8c2281b0918a43a9c7e170545d196, type: 3}
   minFoodCenters: 3
-  maxFoodCenters: 10
-  width: 20
-  height: 20
+  maxFoodCenters: 5
+  width: 10
+  height: 10
+  waitTime: 0
+  foodCenters: []
+  players: []

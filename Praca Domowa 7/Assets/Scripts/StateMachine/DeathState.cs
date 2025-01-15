@@ -3,18 +3,18 @@ using UnityEngine;
 [CreateAssetMenu]
 public class DeathState : StateBase
 {
-    public override void Enter()
+    public override void StateEnter(StateMachine stateMachine)
     {
-        throw new System.NotImplementedException();
+        Debug.Log($"{stateMachine.gameObject.name} Entered {name}");
+
+        Destroy(stateMachine.gameObject);
     }
 
-    public override void Update()
+    public override void StateUpdate(StateMachine stateMachine)
     {
-        throw new System.NotImplementedException();
     }
 
-    public override void Exit()
+    public override void StateExit(StateMachine stateMachine)
     {
-        throw new System.NotImplementedException();
     }
 }

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possibleCollisions: []
-  checkRadius: 1
+  checkRadius: 2
   baseColor: {r: 0.4784314, g: 0.8980393, b: 0.3254902, a: 1}
 --- !u!212 &4608086139289257532
 SpriteRenderer:
