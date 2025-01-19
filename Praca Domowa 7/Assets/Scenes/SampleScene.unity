@@ -264,8 +264,8 @@ MonoBehaviour:
   foodCenterObject: {fileID: 7675594001776572989, guid: d3f8c2281b0918a43a9c7e170545d196, type: 3}
   minFoodCenters: 3
   maxFoodCenters: 5
-  width: 7
-  height: 7
-  waitTime: 0
+  width: 10
+  height: 10
+  waitTime: 1
   foodCenters: []
   players: []
