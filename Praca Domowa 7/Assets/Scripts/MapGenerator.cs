@@ -118,17 +118,17 @@ public class MapGenerator : MonoBehaviour
     {
         GameObject player1 = Instantiate(playerObject, new Vector2(0, 0), Quaternion.identity);
         player1.name = "Player 1";
-        GameObject player2 = Instantiate(playerObject, new Vector2(width - 1, 0), Quaternion.identity);
-        player2.name = "Player 2";
-        GameObject player3 = Instantiate(playerObject, new Vector2(0, height - 1), Quaternion.identity);
-        player3.name = "Player 3";
-        GameObject player4 = Instantiate(playerObject, new Vector2(width - 1, height - 1), Quaternion.identity);
-        player4.name = "Player 4";
+        //GameObject player2 = Instantiate(playerObject, new Vector2(width - 1, 0), Quaternion.identity);
+        //player2.name = "Player 2";
+        //GameObject player3 = Instantiate(playerObject, new Vector2(0, height - 1), Quaternion.identity);
+        //player3.name = "Player 3";
+        //GameObject player4 = Instantiate(playerObject, new Vector2(width - 1, height - 1), Quaternion.identity);
+        //player4.name = "Player 4";
 
         players.Add(player1.GetComponent<Player>());
-        players.Add(player2.GetComponent<Player>());
-        players.Add(player3.GetComponent<Player>());
-        players.Add(player4.GetComponent<Player>());
+        //players.Add(player2.GetComponent<Player>());
+        //players.Add(player3.GetComponent<Player>());
+        //players.Add(player4.GetComponent<Player>());
     }
 
     private async Task PlaceFoodCenters()

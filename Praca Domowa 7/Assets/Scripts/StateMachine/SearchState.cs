@@ -11,18 +11,50 @@ public class SearchState : StateBase
 
     public override void StateUpdate(StateMachine stateMachine)
     {
-        if (stateMachine.player.foodCenterList.Count == 0)
+
+        if (stateMachine.player.foodCenterList.Count == 0 || stateMachine.player.currentFood == stateMachine.player.maxFood)
         {
             stateMachine.SetState(stateMachine.patrolState);
         }
         else
         {
+
+            FoodCenter bestCenter = null;
+            float bestCount = 0;
             //idz do najlepszego punktu z jedzeniem
             //jak juz jest w punkcie to przejdz do EatState
-            stateMachine.SetState(stateMachine.patrolState);
-            foreach (KeyValuePair<FoodCenter, int> foodCenter in stateMachine.player.foodCenterList)
+            foreach (KeyValuePair<FoodCenter, int> keyValuePair in stateMachine.player.foodCenterList)
             {
-                Debug.Log($"{stateMachine.player.name}--{foodCenter.Key.name}--{foodCenter.Value}");
+                if (keyValuePair.Value / Vector3.Distance(keyValuePair.Key.transform.position, stateMachine.player.transform.position) > bestCount)
+                {
+                    bestCount = keyValuePair.Value / Vector3.Distance(keyValuePair.Key.transform.position, stateMachine.player.transform.position);
+                    bestCenter = keyValuePair.Key;
+                }
+            }
+            if (bestCenter != null)
+            {
+                if (stateMachine.player.transform.position.x > bestCenter.transform.position.x)
+                {
+                    stateMachine.player.transform.position += Vector3.left;
+                }
+                else if (stateMachine.player.transform.position.x < bestCenter.transform.position.x)
+                {
+                    stateMachine.player.transform.position += Vector3.right;
+                }
+
+                if (stateMachine.player.transform.position.y < bestCenter.transform.position.y)
+                {
+                    stateMachine.player.transform.position += Vector3.up;
+                }
+                else if (stateMachine.player.transform.position.y > bestCenter.transform.position.y)
+                {
+                    stateMachine.player.transform.position += Vector3.down;
+                }
+
+                if (Vector3.Distance(stateMachine.player.transform.position, bestCenter.transform.position) < 0.1f)
+                {
+                    stateMachine.SetState(stateMachine.eatState);
+                }
             }
         }
 

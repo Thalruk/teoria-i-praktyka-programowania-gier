@@ -5,8 +5,7 @@ public class DeathState : StateBase
 {
     public override void StateEnter(StateMachine stateMachine)
     {
-        Debug.Log($"{stateMachine.gameObject.name} Entered {name}");
-
+        Debug.Log($"{stateMachine.player.name} Entered {name}");
         Destroy(stateMachine.gameObject);
     }
 

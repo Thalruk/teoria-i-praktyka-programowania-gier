@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class FoodCenter : MonoBehaviour
@@ -7,6 +8,8 @@ public class FoodCenter : MonoBehaviour
 
     [SerializeField] public int currentFood;
 
+    [SerializeField] TextMeshProUGUI text;
+
     private void Start()
     {
         currentFood = Random.Range(minFood, maxFood);
@@ -14,6 +17,7 @@ public class FoodCenter : MonoBehaviour
 
     private void Update()
     {
+        text.text = currentFood.ToString();
         if (currentFood == 0)
         {
             foreach (Player player in MapGenerator.Instance.players)

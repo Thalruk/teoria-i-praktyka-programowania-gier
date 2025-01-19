@@ -5,36 +5,54 @@ public class EatState : StateBase
 {
     public override void StateEnter(StateMachine stateMachine)
     {
-        Debug.Log($"{stateMachine.gameObject.name} Entered {name}");
+        Debug.Log($"{stateMachine.player.name} Entered {name}");
     }
 
     public override void StateUpdate(StateMachine stateMachine)
     {
         //JESC
 
-        foreach (FoodCenter foodCenter in MapGenerator.Instance.foodCenters)
+        if (stateMachine.player.foodCenterList.Count > 0)
         {
-            if (stateMachine.player.transform.position == foodCenter.transform.position)
+            foreach (FoodCenter foodCenter in MapGenerator.Instance.foodCenters)
             {
-                //jesc do limitu albo do wyczerpania
+                if (stateMachine.player.transform.position == foodCenter.transform.position)
+                {
 
+                    if (foodCenter.currentFood > 0 && stateMachine.player.currentFood < stateMachine.player.maxFood)
+                    {
+                        Debug.Log($"{stateMachine.player.name} EATS FROM  {foodCenter.name}");
 
+                        stateMachine.player.currentFood += 1;
+                        foodCenter.currentFood -= 1;
+                        break;
+                    }
+                    else
+                    {
+                        if (stateMachine.player.currentFood < stateMachine.player.maxFood * stateMachine.player.smallFoodAmountThreshold)
+                        {
+                            Debug.Log($"{stateMachine.player.name} STILL HUNGRY");
+
+                            stateMachine.SetState(stateMachine.searchState);
+                        }
+                        else
+                        {
+                            Debug.Log($"{stateMachine.player.name} NO HUNGRY");
+
+                            stateMachine.SetState(stateMachine.patrolState);
+                        }
+                    }
+                }
+                else
+                {
+                    stateMachine.SetState(stateMachine.searchState);
+                }
             }
-        }
-
-
-        if (stateMachine.player.currentFood < stateMachine.player.maxFood * stateMachine.player.smallFoodAmountThreshold)
-        {
-            stateMachine.SetState(stateMachine.searchState);
-        }
-        else
-        {
-            stateMachine.SetState(stateMachine.patrolState);
         }
     }
 
+
     public override void StateExit(StateMachine stateMachine)
     {
-        throw new System.NotImplementedException();
     }
 }

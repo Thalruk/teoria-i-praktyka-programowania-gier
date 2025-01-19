@@ -5,7 +5,7 @@ public class PatrolState : StateBase
 {
     public override void StateEnter(StateMachine stateMachine)
     {
-        Debug.Log($"{stateMachine.gameObject.name} Entered {name}");
+        Debug.Log($"{stateMachine.player.name} Entered {name}");
     }
 
     public override void StateUpdate(StateMachine stateMachine)
@@ -21,9 +21,11 @@ public class PatrolState : StateBase
         stateMachine.player.currentFood = Mathf.Clamp(stateMachine.player.currentFood - 1, 0, stateMachine.player.maxFood);
         stateMachine.player.UpdateFoodSLider();
 
-        //jest glodny k2
+
         if (stateMachine.player.currentFood < stateMachine.player.maxFood * stateMachine.player.smallFoodAmountThreshold)
         {
+            Debug.Log($"{stateMachine.player.name} AAAAAAAAAAAAAAAAAAAAAAAA {stateMachine.player.currentFood}/ {stateMachine.player.maxFood * stateMachine.player.smallFoodAmountThreshold}");
+
             stateMachine.SetState(stateMachine.searchState);
         }
 
@@ -50,6 +52,11 @@ public class PatrolState : StateBase
             {
                 stateMachine.SetState(stateMachine.talkState);
             }
+        }
+
+        if (stateMachine.player.currentFood == 0)
+        {
+            stateMachine.SetState(stateMachine.deathState);
         }
     }
 

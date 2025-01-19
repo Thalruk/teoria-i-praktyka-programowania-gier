@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public float smallFoodAmountThreshold = 0.5f;
 
     [SerializeField] Slider foodSlider;
+    [SerializeField] int foodCenterAmount;
 
     public Dictionary<FoodCenter, int> foodCenterList;
 
@@ -26,6 +27,10 @@ public class Player : MonoBehaviour
         foodSlider.value = currentFood;
     }
 
+    private void Update()
+    {
+        foodCenterAmount = foodCenterList.Count;
+    }
     public void UpdateFoodSLider()
     {
         foodSlider.value = currentFood;

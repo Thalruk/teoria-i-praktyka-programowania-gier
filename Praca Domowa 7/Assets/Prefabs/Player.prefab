@@ -138,12 +138,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3858a3a05e229e4bbf1078aca5f3778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minStartFood: 100
-  maxStartFood: 200
+  minStartFood: 50
+  maxStartFood: 75
   maxFood: 0
   currentFood: 0
-  smallFoodAmountThreshold: 0.1
+  smallFoodAmountThreshold: 0.5
   foodSlider: {fileID: 9213936517941972411}
+  foodCenterAmount: 0
 --- !u!114 &6917156742158480686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: {fileID: 11400000, guid: d224c9163536d9549a5f988f712ac907, type: 2}
   player: {fileID: -7813736620065104251}
-  interpolationPeriod: 0.5
+  interpolationPeriod: 0.2
   patrolState: {fileID: 11400000, guid: d224c9163536d9549a5f988f712ac907, type: 2}
   talkState: {fileID: 11400000, guid: d1216a4efff8fb348b0c7808d2a255c7, type: 2}
   searchState: {fileID: 11400000, guid: 0dc40f515689e324eaab3e14fd5647e9, type: 2}
